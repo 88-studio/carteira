@@ -1,0 +1,15 @@
+User-agent: *
+# Folders to ignore
+Disallow: /carteira/
+Disallow: /en/
+Disallow: /nl/
+Disallow: /pt/
+Disallow: /uk/
+
+# Specific files to ignore
+Disallow: /LICENSE
+Disallow: /README.md
+
+# Focus on the landing page
+Allow: /index.html
+Allow: /
