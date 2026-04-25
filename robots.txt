@@ -1,6 +1,5 @@
 User-agent: *
 # Folders to ignore
-Disallow: /carteira/
 Disallow: /en/
 Disallow: /nl/
 Disallow: /pt/
