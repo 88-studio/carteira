@@ -49,7 +49,7 @@
       position: fixed;
       top: 0;
       width: 100%;
-      z-index: 100;
+      z-index: 1000;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -64,6 +64,101 @@
       gap: 8px;
     }
     .logo span { color: var(--green); }
+
+    /* ---- Language Dropdown ---- */
+    .lang-dropdown {
+      position: relative;
+      z-index: 200;
+    }
+    .lang-toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      cursor: pointer;
+      transition: background 0.25s, border-color 0.25s;
+      user-select: none;
+    }
+    .lang-toggle:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .lang-toggle .flag-icon { width: 24px; height: 16px; border-radius: 2px; flex-shrink: 0; object-fit: cover; }
+    .lang-toggle .lang-name {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--white);
+    }
+    .lang-toggle .chevron {
+      width: 14px;
+      height: 14px;
+      color: var(--gray-light);
+      transition: transform 0.25s;
+      flex-shrink: 0;
+    }
+    .lang-dropdown.open .lang-toggle .chevron {
+      transform: rotate(180deg);
+    }
+
+    .lang-menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      min-width: 200px;
+      background: #1c1c1e;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      padding: 6px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-8px) scale(0.96);
+      transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+    }
+    .lang-dropdown.open .lang-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+
+    .lang-option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      font-family: inherit;
+    }
+    .lang-option:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .lang-option .flag-icon { width: 24px; height: 16px; border-radius: 2px; flex-shrink: 0; object-fit: cover; }
+    .lang-option .option-label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--white);
+      flex: 1;
+    }
+    .lang-option .check-icon {
+      width: 16px;
+      height: 16px;
+      color: var(--green);
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .lang-option.active .check-icon {
+      opacity: 1;
+    }
+
     .nav-links {
       display: flex;
       gap: 32px;
@@ -103,10 +198,10 @@
     .hero::after {
       content: '';
       position: absolute;
-      top: 32px;
+      top: 80px;
       right: 32px;
       width: 44%;
-      height: calc(100% - 64px);
+      height: calc(100% - 112px);
       background: var(--green);
       border-radius: 32px;
       z-index: 0;
@@ -297,9 +392,9 @@
         left: 24px;
         right: 24px;
         border-radius: 24px;
-      }
-      .hero-left {
-        padding: 140px 32px 40px;
+<!--      }-->
+<!--      .hero-left {-->
+<!--        padding: 140px 32px 40px;-->
         max-width: 100%;
         align-items: center;
         text-align: center;
@@ -314,6 +409,7 @@
       .phone { width: 240px; height: 480px; }
       nav { padding: 16px 24px; }
       .nav-links { display: none; }
+      .lang-toggle .lang-name { display: none; }
     }
   </style>
 </head>
@@ -321,21 +417,77 @@
 
   <!-- Navbar -->
   <nav>
-    <div class="logo"><span>●</span> Carteira</div>
-    <div></div>
+    <div class="logo"><span>&#9679;</span> Carteira</div>
+    <div class="lang-dropdown" id="langDropdown">
+      <div class="lang-toggle" id="langToggle" role="button" tabindex="0" aria-label="Select language">
+        <span id="currentFlagContainer"></span>
+        <span class="lang-name" id="currentLangName">English</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 6l4 4 4-4"/>
+        </svg>
+      </div>
+      <div class="lang-menu" id="langMenu">
+        <button class="lang-option active" data-lang="en">
+          <svg class="flag-icon" width="24" height="16" viewBox="0 0 30 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M30 0.00012207H0V20H30V0.00012207Z" fill="#F0F0F0"/>
+            <path d="M16.875 0H13.125V8.1248H0V11.8747H13.125V19.9995H16.875V11.8747H30V8.1248H16.875V0Z" fill="#D80027"/>
+            <path d="M23.0742 13.4779L30.0009 17.326V13.4779H23.0742Z" fill="#0052B4"/>
+            <path d="M18.2617 13.4779L30.0009 19.9995V18.1554L21.5813 13.4779H18.2617Z" fill="#0052B4"/>
+            <path d="M26.8739 19.9995L18.2617 15.2146V19.9995H26.8739Z" fill="#0052B4"/>
+            <path d="M18.2617 13.4779L30.0009 19.9995V18.1554L21.5813 13.4779H18.2617Z" fill="#F0F0F0"/>
+            <path d="M18.2617 13.4779L30.0009 19.9995V18.1554L21.5813 13.4779H18.2617Z" fill="#D80027"/>
+            <path d="M5.29341 13.4778L0 16.4185V13.4778H5.29341Z" fill="#0052B4"/>
+            <path d="M11.7397 14.3071V19.9995H1.49414L11.7397 14.3071Z" fill="#0052B4"/>
+            <path d="M8.41951 13.4779L0 18.1554V19.9995L11.7391 13.4779H8.41951Z" fill="#D80027"/>
+            <path d="M6.92665 6.52159L0 2.67346V6.52159H6.92665Z" fill="#0052B4"/>
+            <path d="M11.7391 6.52159L0 0V1.84414L8.41951 6.52159H11.7391Z" fill="#0052B4"/>
+            <path d="M3.12695 0L11.7392 4.78491V0H3.12695Z" fill="#0052B4"/>
+            <path d="M11.7391 6.52159L0 0V1.84414L8.41951 6.52159H11.7391Z" fill="#F0F0F0"/>
+            <path d="M11.7391 6.52159L0 0V1.84414L8.41951 6.52159H11.7391Z" fill="#D80027"/>
+            <path d="M24.707 6.5217L30.0004 3.58093V6.5217H24.707Z" fill="#0052B4"/>
+            <path d="M18.2617 5.69233V0H28.5072L18.2617 5.69233Z" fill="#0052B4"/>
+            <path d="M21.5813 6.52159L30.0009 1.84414V0L18.2617 6.52159H21.5813Z" fill="#D80027"/>
+          </svg>
+          <span class="option-label">English</span>
+          <svg class="check-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg>
+        </button>
+        <button class="lang-option" data-lang="pt">
+          <img class="flag-icon" src="br.webp" alt="Brasil" width="24" height="16">
+          <span class="option-label">Portugu&#234;s</span>
+          <svg class="check-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg>
+        </button>
+        <button class="lang-option" data-lang="nl">
+          <svg class="flag-icon" width="24" height="16" viewBox="0 0 30 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M30 0H0V20H30V0Z" fill="#F0F0F0"/>
+            <path d="M30 0H0V6.66665H30V0Z" fill="#A2001D"/>
+            <path d="M30 13.3334H0V20H30V13.3334Z" fill="#0052B4"/>
+          </svg>
+          <span class="option-label">Nederlands</span>
+          <svg class="check-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg>
+        </button>
+        <button class="lang-option" data-lang="uk">
+          <svg class="flag-icon" width="24" height="16" viewBox="0 0 30 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M30 0H0V20H30V0Z" fill="#FFDA44"/>
+            <path d="M30 0H0V10H30V0Z" fill="#338AF3"/>
+          </svg>
+          <span class="option-label">&#1059;&#1082;&#1088;&#1072;&#1111;&#1085;&#1089;&#1100;&#1082;&#1072;</span>
+          <svg class="check-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg>
+        </button>
+      </div>
+    </div>
   </nav>
 
   <!-- Hero -->
   <section class="hero">
     <div class="hero-left">
-      <h1 class="fade-in">Finance made easy, anytime, anywhere!</h1>
-      <p class="fade-in delay-1">Your personal budget planner designed to help you track expenses, save smarter, and take full control of your financial life on-the-go.</p>
+      <h1 class="fade-in" data-i18n="hero_title">Finance made easy, anytime, anywhere!</h1>
+      <p class="fade-in delay-1" data-i18n="hero_desc">Your personal budget planner designed to help you track expenses, save smarter, and take full control of your financial life on-the-go.</p>
 
       <div class="cta-group fade-in delay-2">
         <a href="#" class="store-badge">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734c0-.382.218-.72.609-.92zM14.852 13.06l2.442 2.442-9.28 5.26 6.838-7.702zM17.294 8.498l-2.442 2.442-6.838-7.702 9.28 5.26zM19.443 11.14l2.156 1.22a1 1 0 0 1 0 1.74l-2.156 1.22-2.7-2.1 2.7-2.08z"/></svg>
           <div class="badge-text">
-            <small>GET IT ON</small>
+            <small data-i18n="store_get_it">GET IT ON</small>
             <strong>Google Play</strong>
           </div>
         </a>
@@ -349,7 +501,7 @@
         </div>
         <div class="stat-info">
           <div class="stat-number">10K+</div>
-          <div class="stat-label">Active users</div>
+          <div class="stat-label" data-i18n="active_users">Active users</div>
         </div>
       </div>
     </div>
@@ -358,22 +510,22 @@
       <div class="phone fade-in delay-4">
         <div class="phone-notch"></div>
         <div class="phone-content">
-          <div class="mock-title">Total Balance</div>
+          <div class="mock-title" data-i18n="phone_balance">Total Balance</div>
           <div class="mock-balance"><span>R$</span> 4,250.00</div>
           <div class="mock-row">
-            <span class="label">Groceries</span>
+            <span class="label" data-i18n="phone_groceries">Groceries</span>
             <span class="amount neg">-R$ 320.00</span>
           </div>
           <div class="mock-row">
-            <span class="label">Salary</span>
+            <span class="label" data-i18n="phone_salary">Salary</span>
             <span class="amount pos">+R$ 5,800.00</span>
           </div>
           <div class="mock-row">
-            <span class="label">Streaming</span>
+            <span class="label" data-i18n="phone_streaming">Streaming</span>
             <span class="amount neg">-R$ 45.90</span>
           </div>
           <div class="mock-row">
-            <span class="label">Freelance</span>
+            <span class="label" data-i18n="phone_freelance">Freelance</span>
             <span class="amount pos">+R$ 1,200.00</span>
           </div>
         </div>
@@ -383,10 +535,132 @@
 
   <!-- Footer -->
   <footer>
-    <p>&copy; 2026 Carteira. All rights reserved.</p>
+    <p data-i18n="footer">&copy; 2026 Carteira. All rights reserved.</p>
   </footer>
 
   <script>
+    const translations = {
+      en: {
+        hero_title: "Finance made easy, anytime, anywhere!",
+        hero_desc: "Your personal budget planner designed to help you track expenses, save smarter, and take full control of your financial life on-the-go.",
+        store_get_it: "GET IT ON",
+        active_users: "Active users",
+        phone_balance: "Total Balance",
+        phone_groceries: "Groceries",
+        phone_salary: "Salary",
+        phone_streaming: "Streaming",
+        phone_freelance: "Freelance",
+        footer: "\u00A9 2026 Carteira. All rights reserved.",
+      },
+      pt: {
+        hero_title: "Finan\u00e7as simplificadas, a qualquer hora, em qualquer lugar!",
+        hero_desc: "Seu planejador de or\u00e7amento pessoal, feito para acompanhar despesas, economizar de forma inteligente e ter controle total da sua vida financeira.",
+        store_get_it: "BAIXE NO",
+        active_users: "Usu\u00e1rios ativos",
+        phone_balance: "Saldo Total",
+        phone_groceries: "Mercado",
+        phone_salary: "Sal\u00e1rio",
+        phone_streaming: "Streaming",
+        phone_freelance: "Freelance",
+        footer: "\u00A9 2026 Carteira. Todos os direitos reservados.",
+      },
+      nl: {
+        hero_title: "Financi\u00ebn eenvoudig gemaakt, altijd en overal!",
+        hero_desc: "Jouw persoonlijke budgetplanner, ontworpen om uitgaven bij te houden, slimmer te sparen en volledige controle te hebben over je financi\u00eble leven.",
+        store_get_it: "DOWNLOADEN OP",
+        active_users: "Actieve gebruikers",
+        phone_balance: "Totaal Saldo",
+        phone_groceries: "Boodschappen",
+        phone_salary: "Salaris",
+        phone_streaming: "Streaming",
+        phone_freelance: "Freelance",
+        footer: "\u00A9 2026 Carteira. Alle rechten voorbehouden.",
+      },
+      uk: {
+        hero_title: "\u0424\u0456\u043d\u0430\u043d\u0441\u0438 \u043f\u0440\u043e\u0441\u0442\u043e, \u0431\u0443\u0434\u044c-\u0434\u0435 \u0456 \u0431\u0443\u0434\u044c-\u043a\u043e\u043b\u0438!",
+        hero_desc: "\u0412\u0430\u0448 \u043e\u0441\u043e\u0431\u0438\u0441\u0442\u0438\u0439 \u043f\u043b\u0430\u043d\u0443\u0432\u0430\u043b\u044c\u043d\u0438\u043a \u0431\u044e\u0434\u0436\u0435\u0442\u0443, \u0441\u0442\u0432\u043e\u0440\u0435\u043d\u0438\u0439 \u0434\u043b\u044f \u0432\u0456\u0434\u0441\u0442\u0435\u0436\u0435\u043d\u043d\u044f \u0432\u0438\u0442\u0440\u0430\u0442, \u0440\u043e\u0437\u0443\u043c\u043d\u043e\u0433\u043e \u0437\u0430\u043e\u0449\u0430\u0434\u0436\u0435\u043d\u043d\u044f \u0442\u0430 \u043f\u043e\u0432\u043d\u043e\u0433\u043e \u043a\u043e\u043d\u0442\u0440\u043e\u043b\u044e \u043d\u0430\u0434 \u0432\u0430\u0448\u0438\u043c\u0438 \u0444\u0456\u043d\u0430\u043d\u0441\u0430\u043c\u0438.",
+        store_get_it: "\u0417\u0410\u0412\u0410\u041d\u0422\u0410\u0416\u0418\u0422\u0418 \u041d\u0410",
+        active_users: "\u0410\u043a\u0442\u0438\u0432\u043d\u0456 \u043a\u043e\u0440\u0438\u0441\u0442\u0443\u0432\u0430\u0447\u0456",
+        phone_balance: "\u0417\u0430\u0433\u0430\u043b\u044c\u043d\u0438\u0439 \u0431\u0430\u043b\u0430\u043d\u0441",
+        phone_groceries: "\u041f\u0440\u043e\u0434\u0443\u043a\u0442\u0438",
+        phone_salary: "\u0417\u0430\u0440\u043f\u043b\u0430\u0442\u0430",
+        phone_streaming: "\u0421\u0442\u0440\u0456\u043c\u0456\u043d\u0433",
+        phone_freelance: "\u0424\u0440\u0456\u043b\u0430\u043d\u0441",
+        footer: "\u00A9 2026 Carteira. \u0423\u0441\u0456 \u043f\u0440\u0430\u0432\u0430 \u0437\u0430\u0445\u0438\u0449\u0435\u043d\u0456.",
+      },
+    };
+
+    // Language dropdown logic
+    const dropdown = document.getElementById('langDropdown');
+    const toggle = document.getElementById('langToggle');
+    const menu = document.getElementById('langMenu');
+    const currentFlagContainer = document.getElementById('currentFlagContainer');
+    const currentLangName = document.getElementById('currentLangName');
+    const options = document.querySelectorAll('.lang-option');
+
+    function setLanguage(lang) {
+      // Update text content
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang] && translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
+      document.documentElement.lang = lang;
+      localStorage.setItem('carteira-lang', lang);
+
+      // Update dropdown toggle to show selected flag & name
+      const activeOption = document.querySelector(`.lang-option[data-lang="${lang}"]`);
+      if (activeOption) {
+        const flagEl = activeOption.querySelector('.flag-icon');
+        const cloned = flagEl.cloneNode(true);
+        currentFlagContainer.innerHTML = '';
+        currentFlagContainer.appendChild(cloned);
+        currentLangName.textContent = activeOption.querySelector('.option-label').textContent;
+      }
+
+      // Update active state & checkmarks
+      options.forEach(opt => {
+        opt.classList.toggle('active', opt.dataset.lang === lang);
+      });
+
+      // Close menu
+      dropdown.classList.remove('open');
+    }
+
+    // Toggle dropdown
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropdown.classList.toggle('open');
+    });
+
+    // Keyboard support
+    toggle.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        dropdown.classList.toggle('open');
+      }
+    });
+
+    // Option click
+    options.forEach(opt => {
+      opt.addEventListener('click', () => {
+        setLanguage(opt.dataset.lang);
+      });
+    });
+
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+      if (!dropdown.contains(e.target)) {
+        dropdown.classList.remove('open');
+      }
+    });
+
+    // Init language
+    const savedLang = localStorage.getItem('carteira-lang') || 'en';
+    setLanguage(savedLang);
+
+    // Fade-in observer
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
