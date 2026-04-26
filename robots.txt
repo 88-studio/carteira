@@ -12,3 +12,6 @@ Disallow: /README.md
 # Focus on the landing page
 Allow: /index.html
 Allow: /
+
+Crawl-delay:20
+Sitemap: https://88-studio.github.io/carteira/index.html
