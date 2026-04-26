@@ -313,64 +313,41 @@
 
     /* ---- Phone area ---- */
     .hero-right {
-      flex: 1;
+      position: absolute;
+      top: 80px;
+      right: 32px;
+      width: 44%;
+      height: calc(100% - 112px);
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 1;
-      padding: 140px 56px 80px 0;
     }
 
     .phone {
       width: 280px;
-      height: 560px;
-      border-radius: 40px;
+      height: 600px;
+      border-radius: 20px;
       border: 3px solid rgba(0,0,0,0.2);
       background: var(--bg-card);
       position: relative;
       overflow: hidden;
       box-shadow: 0 40px 80px rgba(0,0,0,0.4);
     }
-    .phone-notch {
+    .phone img.mockup-slide {
       position: absolute;
       top: 0;
-      left: 50%;
-      translate: -50% 0;
-      width: 110px;
-      height: 28px;
-      background: #000;
-      border-radius: 0 0 18px 18px;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 0;
+      opacity: 0;
+      transition: opacity 1s ease;
     }
-    .phone-content {
-      padding: 48px 20px 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
+    .phone img.mockup-slide.active {
+      opacity: 1;
     }
-    .phone-content .mock-title {
-      font-size: 0.75rem;
-      color: var(--gray);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .phone-content .mock-balance {
-      font-size: 2.2rem;
-      font-weight: 800;
-      color: var(--white);
-    }
-    .phone-content .mock-balance span { color: var(--green); }
-    .mock-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 14px;
-      border-radius: 14px;
-      background: rgba(255,255,255,0.04);
-    }
-    .mock-row .label { font-size: 0.85rem; color: var(--gray-light); }
-    .mock-row .amount { font-size: 0.85rem; font-weight: 600; }
-    .mock-row .amount.neg { color: #ff5252; }
-    .mock-row .amount.pos { color: var(--green); }
 
     /* ---- Footer ---- */
     footer {
@@ -392,9 +369,9 @@
         left: 24px;
         right: 24px;
         border-radius: 24px;
-<!--      }-->
-<!--      .hero-left {-->
-<!--        padding: 140px 32px 40px;-->
+      }
+      .hero-left {
+        padding: 140px 32px 40px;
         max-width: 100%;
         align-items: center;
         text-align: center;
@@ -403,6 +380,11 @@
       .cta-group { justify-content: center; }
       .stats-row { justify-content: center; }
       .hero-right {
+        position: relative;
+        top: auto;
+        right: auto;
+        width: 100%;
+        height: auto;
         padding: 20px 32px 80px;
         justify-content: center;
       }
@@ -507,28 +489,12 @@
     </div>
 
     <div class="hero-right">
-      <div class="phone fade-in delay-4">
-        <div class="phone-notch"></div>
-        <div class="phone-content">
-          <div class="mock-title" data-i18n="phone_balance">Available Balance</div>
-          <div class="mock-balance"><span>$</span>3,500.00</div>
-          <div class="mock-row">
-            <span class="label" data-i18n="phone_essentials">Essentials</span>
-            <span class="amount neg">$280 / $2,000</span>
-          </div>
-          <div class="mock-row">
-            <span class="label" data-i18n="phone_emergencies">Emergencies</span>
-            <span class="amount neg">$50 / $800</span>
-          </div>
-          <div class="mock-row">
-            <span class="label" data-i18n="phone_entertainment">Entertainment</span>
-            <span class="amount neg">$10 / $600</span>
-          </div>
-          <div class="mock-row">
-            <span class="label" data-i18n="phone_hobbies">Hobbies</span>
-            <span class="amount neg">$160 / $600</span>
-          </div>
-        </div>
+      <div class="phone fade-in delay-4" id="phoneCarousel">
+        <img class="mockup-slide active" src="mockups/1000161349-portrait.png" alt="Carteira screenshot 1">
+        <img class="mockup-slide" src="mockups/1000161361-portrait.png" alt="Carteira screenshot 2">
+        <img class="mockup-slide" src="mockups/1000161362-portrait.png" alt="Carteira screenshot 3">
+        <img class="mockup-slide" src="mockups/1000161365-portrait.png" alt="Carteira screenshot 4">
+        <img class="mockup-slide" src="mockups/1000161368-portrait.png" alt="Carteira screenshot 5">
       </div>
     </div>
   </section>
@@ -676,6 +642,17 @@
     }, { threshold: 0.1 });
 
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Mockup carousel
+    (function() {
+      const slides = document.querySelectorAll('#phoneCarousel .mockup-slide');
+      let current = 0;
+      setInterval(() => {
+        slides[current].classList.remove('active');
+        current = (current + 1) % slides.length;
+        slides[current].classList.add('active');
+      }, 5000);
+    })();
   </script>
 </body>
 </html>
