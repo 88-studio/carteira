@@ -541,6 +541,7 @@
   <script>
     const translations = {
       en: {
+        page_title: "Carteira \u2014 Budget Planner App",
         hero_title: "Finance made easy, anytime, anywhere!",
         hero_desc: "Your personal budget planner designed to help you track expenses, save smarter, and take full control of your financial life on-the-go.",
         store_get_it: "GET IT ON",
@@ -553,6 +554,7 @@
         footer: "\u00A9 2026 Carteira. All rights reserved.",
       },
       pt: {
+        page_title: "Carteira - App de Controle Financeiro",
         hero_title: "Finan\u00e7as simplificadas, a qualquer hora, em qualquer lugar!",
         hero_desc: "Seu planejador de or\u00e7amento pessoal, feito para acompanhar despesas, economizar de forma inteligente e ter controle total da sua vida financeira.",
         store_get_it: "BAIXE NO",
@@ -565,6 +567,7 @@
         footer: "\u00A9 2026 Carteira. Todos os direitos reservados.",
       },
       nl: {
+        page_title: "Carteira \u2014 Budgetplanner App",
         hero_title: "Financi\u00ebn eenvoudig gemaakt, altijd en overal!",
         hero_desc: "Jouw persoonlijke budgetplanner, ontworpen om uitgaven bij te houden, slimmer te sparen en volledige controle te hebben over je financi\u00eble leven.",
         store_get_it: "DOWNLOADEN OP",
@@ -577,6 +580,7 @@
         footer: "\u00A9 2026 Carteira. Alle rechten voorbehouden.",
       },
       uk: {
+        page_title: "Carteira \u2014 \u041f\u043b\u0430\u043d\u0443\u0432\u0430\u043b\u044c\u043d\u0438\u043a \u0411\u044e\u0434\u0436\u0435\u0442\u0443",
         hero_title: "\u0424\u0456\u043d\u0430\u043d\u0441\u0438 \u043f\u0440\u043e\u0441\u0442\u043e, \u0431\u0443\u0434\u044c-\u0434\u0435 \u0456 \u0431\u0443\u0434\u044c-\u043a\u043e\u043b\u0438!",
         hero_desc: "\u0412\u0430\u0448 \u043e\u0441\u043e\u0431\u0438\u0441\u0442\u0438\u0439 \u043f\u043b\u0430\u043d\u0443\u0432\u0430\u043b\u044c\u043d\u0438\u043a \u0431\u044e\u0434\u0436\u0435\u0442\u0443, \u0441\u0442\u0432\u043e\u0440\u0435\u043d\u0438\u0439 \u0434\u043b\u044f \u0432\u0456\u0434\u0441\u0442\u0435\u0436\u0435\u043d\u043d\u044f \u0432\u0438\u0442\u0440\u0430\u0442, \u0440\u043e\u0437\u0443\u043c\u043d\u043e\u0433\u043e \u0437\u0430\u043e\u0449\u0430\u0434\u0436\u0435\u043d\u043d\u044f \u0442\u0430 \u043f\u043e\u0432\u043d\u043e\u0433\u043e \u043a\u043e\u043d\u0442\u0440\u043e\u043b\u044e \u043d\u0430\u0434 \u0432\u0430\u0448\u0438\u043c\u0438 \u0444\u0456\u043d\u0430\u043d\u0441\u0430\u043c\u0438.",
         store_get_it: "\u0417\u0410\u0412\u0410\u041d\u0422\u0410\u0416\u0418\u0422\u0418 \u041d\u0410",
@@ -606,6 +610,7 @@
           el.textContent = translations[lang][key];
         }
       });
+      document.title = translations[lang].page_title;
       document.documentElement.lang = lang;
       localStorage.setItem('carteira-lang', lang);
 
